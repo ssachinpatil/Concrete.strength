@@ -1,10 +1,10 @@
 import pickle
-
 import json
-
-
 import numpy as np
-# import config
+try:
+    import config
+except:
+    pass
 
 class concrete():
     def __init__(self,Cement,BlastFurnaceSlag,FlyAsh,Water,Superplasticizer,CoarseAggregate,FineAggregate,Age):
@@ -18,11 +18,20 @@ class concrete():
         self.Age=Age
 
     def load_model(self):
-        with open("concrete.pkl",'rb') as f:
-            self.model=pickle.load(f)
+        try:
+            with open(config.MODEL_FILE_PATH,'rb') as f:
+                self.model=pickle.load(f)
+                
+            with open(config.JSON_FILE_PATH,'r') as m:
+                self.data=json.load(m)
         
-        with open ("data.json",'r') as m:
-            self.data=json.load(m)
+        except:
+            
+            with open("concrete.pkl",'rb') as f:
+                self.model=pickle.load(f)
+        
+            with open ("data.json",'r') as m:
+                self.data=json.load(m)
 
     def get_pred(self):
         self.load_model()
